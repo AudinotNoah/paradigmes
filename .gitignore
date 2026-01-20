@@ -1,0 +1,52 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Composer vendors
+vendor/
+**/vendor/
+
+# Composer lock (optionnel, certains le gardent)
+composer.lock
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Environment / secrets
+.env
+*.env
+prat.env
+
+# Docker volumes / data
+docker-data/
+data/
+uploads/
+extensions/
+
+# Directus
+directus/database/
+directus/uploads/
+directus/extensions/
+
+# MongoDB data
+mongo/data/*.json.bak
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+*.cache
+
+
+.claude/
+.cursor/
+.tps/

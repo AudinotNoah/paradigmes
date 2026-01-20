@@ -212,7 +212,7 @@ echo "<h3>Formulaire d'ajout de produit</h3>";
 // Récupérer les tailles distinctes
 $tailles = ['normale', 'grande'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $newProduct = [
         'numero' => (int)$_POST['numero'],
         'libelle' => $_POST['libelle'],

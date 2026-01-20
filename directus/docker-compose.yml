@@ -1,10 +1,9 @@
-version: '3'
-
 services:
   database:
     image: postgres:15
     volumes:
       - ./data/database:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: 'directus'
       POSTGRES_PASSWORD: 'directus'
@@ -25,8 +24,8 @@ services:
       - ./uploads:/directus/uploads
       - ./extensions:/directus/extensions
     depends_on:
-      - cache
       - database
+      - cache
     environment:
       KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
       SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
@@ -45,7 +44,6 @@ services:
       ADMIN_EMAIL: 'admin@example.com'
       ADMIN_PASSWORD: 'd1r3ctu5'
 
-      # Activer GraphQL
       GRAPHQL_INTROSPECTION: 'true'
     networks:
       - directus-net
