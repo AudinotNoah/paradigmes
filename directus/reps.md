@@ -2,7 +2,7 @@
 
 ---
 
-## Setup Directus (notre configuration)
+## Setup Directus
 
 ### 1. Lancer Directus
 
@@ -41,13 +41,7 @@ Les clés étrangères SQL créent les relations M2O (Many-to-One) automatiqueme
 Répéter pour :
 
 - `specialites` → `praticiens` (Foreign Key: `specialite_id`)
-- `specialites` → `motifs_visite` (Foreign Key: `specialite_id`)
-
-### 4. Permissions (pour les requêtes publiques)
-
-Aller dans **Settings > Roles & Permissions > Public** et activer Read sur toutes les collections.
-
----
+- `specialites` → `motifs_visite` (Foreign Key: `specialite_id`)---
 
 # TP3 : Directus REST API
 
