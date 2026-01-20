@@ -1,3 +1,4 @@
+
 # TP3 et TP4 - Directus REST API et GraphQL
 
 ---
@@ -376,6 +377,8 @@ Authorization: Bearer VOTRE_TOKEN
 
 ## Mutations GraphQL
 
+> Note : Pour les relations (`specialite_id`, `structure_id`), il faut passer un objet `{ id: ... }` (comme vu en cours) et pas juste l'ID.
+
 ### 1. Créer la spécialité "cardiologie"
 
 ```graphql
@@ -390,7 +393,7 @@ mutation {
 }
 ```
 
-### 2. Créer un praticien
+### 2. Créer un praticien (sans spécialité au départ)
 
 ```graphql
 mutation {
@@ -408,26 +411,31 @@ mutation {
 }
 ```
 
-### 3. Modifier le praticien pour le rattacher à "cardiologie"
+> Je note l'id du praticien (`ID_PRATICIEN_MARTIN`) et celui de cardiologie (`ID_CARDIO`) pour la suite.
+
+### 3. Modifier le praticien pour le "rattacher" à la spécialité "cardiologie"
 
 ```graphql
 mutation {
   update_praticiens_item(
-    id: "ID_DU_PRATICIEN"
+    id: "ID_PRATICIEN_MARTIN"
     data: {
-      specialite_id: "ID_CARDIOLOGIE"
+      specialite_id: { id: ID_CARDIO }
     }
   ) {
     id
     nom
     specialite_id {
+      id
       libelle
     }
   }
 }
 ```
 
-### 4. Créer un praticien rattaché à "cardiologie"
+### 4. Créer un praticien directement rattaché à "cardiologie"
+
+Le rattachement direct dans le `create` ne passe pas sur cette version. Je le fais en deux étapes : création puis update.
 
 ```graphql
 mutation {
@@ -437,53 +445,62 @@ mutation {
     ville: "Marseille"
     email: "sophie.bernard@example.com"
     telephone: "04 91 00 00 00"
-    specialite_id: "ID_CARDIOLOGIE"
   }) {
     id
     nom
+  }
+}
+```
+
+Puis rattachement avec l'id récupéré (`ID_SOPHIE`) :
+
+```graphql
+mutation {
+  update_praticiens_item(
+    id: "ID_SOPHIE"
+    data: { specialite_id: { id: ID_CARDIO } }
+  ) {
+    id
+    nom
+    specialite_id { id libelle }
+  }
+}
+```
+
+### 5. Créer un praticien et créer sa spécialité "chirurgie" en même temps (GraphQL)
+
+```graphql
+mutation {
+  create_praticiens_item(
+    data: {
+      nom: "Durand",
+      prenom: "Michel",
+      ville: "Bordeaux",
+      email: "michel.durand@example.com",
+      telephone: "05 56 00 00 00",
+      specialite_id: { 
+        create: { 
+          libelle: "chirurgie"
+          description: "Interventions chirurgicales"
+        }
+      }
+    }
+  ) {
+    id
+    nom
     specialite_id {
+      id
       libelle
     }
   }
 }
 ```
 
-### 5. Créer un praticien et créer sa spécialité "chirurgie" en même temps
+> Je note `ID_CHIRURGIE` pour la suite.
 
-```graphql
-mutation {
-  create_specialites_item(data: {
-    libelle: "chirurgie"
-    description: "Interventions chirurgicales"
-  }) {
-    id
-    libelle
-  }
-}
-```
+### 6. Ajouter un autre praticien à la spécialité "chirurgie"
 
-Puis créer le praticien :
-
-```graphql
-mutation {
-  create_praticiens_item(data: {
-    nom: "Durand"
-    prenom: "Michel"
-    ville: "Bordeaux"
-    email: "michel.durand@example.com"
-    telephone: "05 56 00 00 00"
-    specialite_id: "ID_CHIRURGIE"
-  }) {
-    id
-    nom
-    specialite_id {
-      libelle
-    }
-  }
-}
-```
-
-### 6. Ajouter un praticien à "chirurgie"
+Même chose que pour la 4 : création d'abord, puis rattachement.
 
 ```graphql
 mutation {
@@ -493,25 +510,36 @@ mutation {
     ville: "Toulouse"
     email: "anne.leroy@example.com"
     telephone: "05 61 00 00 00"
-    specialite_id: "ID_CHIRURGIE"
   }) {
     id
     nom
-    specialite_id {
-      libelle
-    }
   }
 }
 ```
 
-### 7. Rattacher le premier praticien à une structure existante
+Avec l'id `ID_ANNE` :
 
 ```graphql
 mutation {
   update_praticiens_item(
-    id: "ID_PREMIER_PRATICIEN"
+    id: "ID_ANNE"
+    data: { specialite_id: { id: ID_CHIRURGIE } }
+  ) {
+    id
+    nom
+    specialite_id { id libelle }
+  }
+}
+```
+
+### 7. Modifier le premier praticien créé pour le rattacher à une structure existante
+
+```graphql
+mutation {
+  update_praticiens_item(
+    id: "ID_PRATICIEN_MARTIN"
     data: {
-      structure_id: "ID_STRUCTURE"
+      structure_id: { id: "3444bdd2-8783-3aed-9a5e-4d298d2a2d7c" }
     }
   ) {
     id
@@ -524,7 +552,7 @@ mutation {
 }
 ```
 
-### 8. Supprimer les deux derniers praticiens créés
+### 8. Supprimer les deux derniers praticiens créés (GraphQL)
 
 ```graphql
 mutation {
@@ -542,8 +570,4 @@ mutation {
 }
 ```
 
----
-
-|  |  |  |
-| - | - | - |
-|  |  |  |
+(`ID_AVANT_DERNIER` et `ID_DERNIER` correspondent aux ids des mutations 4, 5 ou 6).
