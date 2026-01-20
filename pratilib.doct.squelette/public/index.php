@@ -14,14 +14,10 @@ $entityManager = require_once __DIR__ . '/../config/bootstrap.php';
 
 echo "<h1>TP1 - Doctrine ORM - Réponses aux exercices</h1>";
 
-// ============================================================================
-// EXERCICE 1 : Utilisation élémentaire
-// ============================================================================
+// --- Exercice 1 : utilisation élémentaire ---
 echo "<h2>Exercice 1 : Utilisation élémentaire</h2>";
 
-// ----------------------------------------------------------------------------
-// 1.1 Afficher la spécialité d'identifiant 1 : id, libellé, description
-// ----------------------------------------------------------------------------
+// 1.1 Spécialité id=1 : id, libellé, description
 echo "<h3>1.1 - Spécialité ID 1</h3>";
 $specialite1 = $entityManager->find(Specialite::class, 1);
 if ($specialite1) {
@@ -32,9 +28,7 @@ if ($specialite1) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.2 Afficher le praticien ID 8ae1400f-d46d-3b50-b356-269f776be532
-// ----------------------------------------------------------------------------
+// 1.2 Praticien id=8ae1400f-d46d-3b50-b356-269f776be532 : id, nom, prénom, ville, email, téléphone
 echo "<h3>1.2 - Praticien ID 8ae1400f-d46d-3b50-b356-269f776be532</h3>";
 $praticien = $entityManager->find(Praticien::class, '8ae1400f-d46d-3b50-b356-269f776be532');
 if ($praticien) {
@@ -48,9 +42,7 @@ if ($praticien) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.3 Compléter avec spécialité et structure de rattachement
-// ----------------------------------------------------------------------------
+// 1.3 Compléter avec spécialité et structure
 echo "<h3>1.3 - Praticien avec spécialité et structure</h3>";
 if ($praticien) {
     echo "<pre>";
@@ -61,9 +53,7 @@ if ($praticien) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.4 Structure 3444bdd2-8783-3aed-9a5e-4d298d2a2d7c avec liste praticiens
-// ----------------------------------------------------------------------------
+// 1.4 Structure id=3444bdd2-8783-3aed-9a5e-4d298d2a2d7c avec liste des praticiens
 echo "<h3>1.4 - Structure avec liste des praticiens</h3>";
 $structure = $entityManager->find(Structure::class, '3444bdd2-8783-3aed-9a5e-4d298d2a2d7c');
 if ($structure) {
@@ -77,9 +67,7 @@ if ($structure) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.5 Spécialité ID 1 avec motifs de visite associés
-// ----------------------------------------------------------------------------
+// 1.5 Spécialité id=1 avec motifs de visite
 echo "<h3>1.5 - Spécialité ID 1 avec motifs de visite</h3>";
 if ($specialite1) {
     echo "<pre>";
@@ -91,9 +79,7 @@ if ($specialite1) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.6 Praticien 8ae1400f... : liste de ses motifs de visite
-// ----------------------------------------------------------------------------
+// 1.6 Motifs de visite du praticien 8ae1400f...
 echo "<h3>1.6 - Motifs de visite du praticien</h3>";
 if ($praticien) {
     echo "<pre>";
@@ -105,9 +91,7 @@ if ($praticien) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 1.7 Créer un praticien, spécialité pédiatrie, sauvegarder
-// ----------------------------------------------------------------------------
+// 1.7 Créer un praticien (spécialité: pédiatrie) et sauvegarder
 echo "<h3>1.7 - Création d'un praticien (pédiatrie)</h3>";
 $specialitePediatrie = $entityManager->getRepository(Specialite::class)
     ->findOneBy(['libelle' => 'pédiatrie']);
@@ -133,9 +117,7 @@ echo "</pre>";
 
 $nouveauPraticienId = $nouveauPraticien->getId();
 
-// ----------------------------------------------------------------------------
-// 1.8 Modifier le praticien créé
-// ----------------------------------------------------------------------------
+// 1.8 Modifier le praticien créé (structure, ville, motifs)
 echo "<h3>1.8 - Modification du praticien</h3>";
 
 // Rattacher à la structure Cabinet Bigot
@@ -165,22 +147,16 @@ foreach ($nouveauPraticien->getMotifsVisite() as $motif) {
 }
 echo "</pre>";
 
-// ----------------------------------------------------------------------------
 // 1.9 Supprimer ce praticien
-// ----------------------------------------------------------------------------
 echo "<h3>1.9 - Suppression du praticien</h3>";
 $entityManager->remove($nouveauPraticien);
 $entityManager->flush();
 echo "<pre>Praticien supprimé avec succès!</pre>";
 
-// ============================================================================
-// EXERCICE 2 : Requêtes avec conditions de sélection
-// ============================================================================
+// --- Exercice 2 : requêtes avec conditions ---
 echo "<h2>Exercice 2 : Requêtes avec conditions de sélection</h2>";
 
-// ----------------------------------------------------------------------------
-// 2.1 Praticien avec email Gabrielle.Klein@live.com
-// ----------------------------------------------------------------------------
+// 2.1 Praticien par email
 echo "<h3>2.1 - Praticien par email</h3>";
 $praticienEmail = $entityManager->getRepository(Praticien::class)
     ->findOneBy(['email' => 'Gabrielle.Klein@live.com']);
@@ -193,9 +169,7 @@ if ($praticienEmail) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
 // 2.2 Praticien Goncalves à Paris
-// ----------------------------------------------------------------------------
 echo "<h3>2.2 - Praticien Goncalves à Paris</h3>";
 $goncalves = $entityManager->getRepository(Praticien::class)
     ->findOneBy(['nom' => 'Goncalves', 'ville' => 'Paris']);
@@ -208,9 +182,7 @@ if ($goncalves) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 2.3 Spécialité pédiatrie avec praticiens associés
-// ----------------------------------------------------------------------------
+// 2.3 Spécialité pédiatrie avec praticiens
 echo "<h3>2.3 - Spécialité pédiatrie avec praticiens</h3>";
 $pediatrie = $entityManager->getRepository(Specialite::class)
     ->findOneBy(['libelle' => 'pédiatrie']);
@@ -225,9 +197,7 @@ if ($pediatrie) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 2.4 Spécialités contenant 'santé' dans la description (requête critères)
-// ----------------------------------------------------------------------------
+// 2.4 Spécialités dont la description contient 'santé' (QueryBuilder)
 echo "<h3>2.4 - Spécialités contenant 'santé' dans description</h3>";
 // Note: Dans les données, il n'y a pas de spécialité avec "santé" dans la description
 // On utilise un QueryBuilder pour la requête critères
@@ -260,9 +230,7 @@ if (count($specialitesSante) > 0) {
 }
 echo "</pre>";
 
-// ----------------------------------------------------------------------------
-// 2.5 Praticiens ophtalmologie exerçant à Paris
-// ----------------------------------------------------------------------------
+// 2.5 Praticiens ophtalmologie à Paris (DQL)
 echo "<h3>2.5 - Praticiens ophtalmologie à Paris</h3>";
 $dql = "SELECT p FROM toubeelib\praticien\Entity\Praticien p
         JOIN p.specialite s
@@ -279,14 +247,10 @@ foreach ($praticiensParis as $p) {
 }
 echo "</pre>";
 
-// ============================================================================
-// EXERCICE 3 : Repository et DQL
-// ============================================================================
+// --- Exercice 3 : repository et DQL ---
 echo "<h2>Exercice 3 : Repository et DQL</h2>";
 
-// ----------------------------------------------------------------------------
-// 3.1 Liste des spécialités contenant un mot-clé
-// ----------------------------------------------------------------------------
+// 3.1 Spécialités contenant un mot-clé
 echo "<h3>3.1 - Spécialités par mot-clé (exemple: 'méd')</h3>";
 $specialiteRepo = $entityManager->getRepository(Specialite::class);
 $specialitesKeyword = $specialiteRepo->findByKeyword('méd');
@@ -297,9 +261,7 @@ foreach ($specialitesKeyword as $s) {
 }
 echo "</pre>";
 
-// ----------------------------------------------------------------------------
-// 3.2 Liste des praticiens dont la spécialité contient un mot-clé
-// ----------------------------------------------------------------------------
+// 3.2 Praticiens dont la spécialité contient un mot-clé
 echo "<h3>3.2 - Praticiens par mot-clé dans spécialité (exemple: 'radio')</h3>";
 $praticienRepo = $entityManager->getRepository(Praticien::class);
 $praticiensSpecKeyword = $praticienRepo->findBySpecialiteKeyword('radio');
@@ -310,9 +272,7 @@ foreach ($praticiensSpecKeyword as $p) {
 }
 echo "</pre>";
 
-// ----------------------------------------------------------------------------
 // 3.3 Praticiens d'une spécialité acceptant un moyen de paiement
-// ----------------------------------------------------------------------------
 echo "<h3>3.3 - Praticiens par spécialité et moyen de paiement</h3>";
 $praticiensMoyenPaiement = $praticienRepo->findBySpecialiteAndMoyenPaiement('médecine générale', 'carte bancaire');
 echo "<pre>";

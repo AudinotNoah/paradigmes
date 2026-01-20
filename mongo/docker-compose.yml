@@ -19,9 +19,6 @@ services:
       - catamongo.net
     command: php -S 0.0.0.0:80 -t /var/php/public
 
-  ################################################
-  # mongodb & mongo-express
-  ###############################################
   mongo:
     image: mongo:latest
     volumes:

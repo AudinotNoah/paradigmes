@@ -14,14 +14,10 @@ $db = $client->chopizza;
 
 echo "<h1>TP2 - MongoDB - Réponses aux exercices</h1>";
 
-// ============================================================================
-// SECTION 2 : Requêtes en PHP
-// ============================================================================
+// --- Section 2 : requêtes en PHP ---
 echo "<h2>Section 2 : Requêtes en PHP</h2>";
 
-// ----------------------------------------------------------------------------
-// 2.1 Liste des produits : numero, categorie, libelle
-// ----------------------------------------------------------------------------
+// 2.1 Liste des produits (numero, categorie, libelle)
 echo "<h3>2.1 - Liste des produits (numero, categorie, libelle)</h3>";
 $produits = $db->produits->find([], [
     'projection' => ['numero' => 1, 'categorie' => 1, 'libelle' => 1]
@@ -37,9 +33,7 @@ foreach ($produits as $produit) {
 }
 echo "</table><br>";
 
-// ----------------------------------------------------------------------------
-// 2.2 Produit numéro 6 : libellé, catégorie, description, tarifs
-// ----------------------------------------------------------------------------
+// 2.2 Produit n°6 (détails + tarifs)
 echo "<h3>2.2 - Produit numéro 6 (détails complets)</h3>";
 $produit6 = $db->produits->findOne(['numero' => 6]);
 
@@ -55,9 +49,7 @@ if ($produit6) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 2.3 Produits avec tarif taille normale <= 3.0
-// ----------------------------------------------------------------------------
+// 2.3 Produits avec tarif (taille normale) <= 3.0
 echo "<h3>2.3 - Produits avec tarif taille normale <= 3.0</h3>";
 $produitsNormale = $db->produits->find([
     'tarifs' => [
@@ -81,9 +73,7 @@ foreach ($produitsNormale as $p) {
 }
 echo "</ul>";
 
-// ----------------------------------------------------------------------------
-// 2.4 Produits associés à exactement 4 recettes
-// ----------------------------------------------------------------------------
+// 2.4 Produits associés à 4 recettes
 echo "<h3>2.4 - Produits associés à 4 recettes</h3>";
 $produits4Recettes = $db->produits->find([
     'recettes' => ['$size' => 4]
@@ -95,9 +85,7 @@ foreach ($produits4Recettes as $p) {
 }
 echo "</ul>";
 
-// ----------------------------------------------------------------------------
-// 2.5 Produit n°6 avec recettes associées (nom et difficulté)
-// ----------------------------------------------------------------------------
+// 2.5 Produit n°6 avec recettes (nom + difficulté)
 echo "<h3>2.5 - Produit n°6 avec recettes</h3>";
 $produit6 = $db->produits->findOne(['numero' => 6]);
 
@@ -116,9 +104,7 @@ if ($produit6) {
     echo "</pre>";
 }
 
-// ----------------------------------------------------------------------------
-// 2.6 Fonction retournant les données descriptives d'un produit
-// ----------------------------------------------------------------------------
+// 2.6 Fonction getProductInfo(numero, taille)
 echo "<h3>2.6 - Fonction getProductInfo(numero, taille)</h3>";
 
 function getProductInfo(MongoDB\Database $db, int $numero, string $taille): ?array
@@ -159,9 +145,7 @@ echo "Résultat de getProductInfo(5, 'normale'):\n";
 echo json_encode($info2, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 echo "</pre>";
 
-// ============================================================================
-// SECTION 3 : Application (navigation catalogue)
-// ============================================================================
+// --- Section 3 : mini application ---
 echo "<h2>Section 3 : Application - Navigation par catégorie</h2>";
 
 // Récupérer les catégories distinctes
@@ -204,9 +188,7 @@ foreach ($produitsCat as $p) {
 }
 echo "</table>";
 
-// ============================================================================
-// Formulaire d'ajout de produit
-// ============================================================================
+// --- Formulaire d'ajout de produit ---
 echo "<h3>Formulaire d'ajout de produit</h3>";
 
 // Récupérer les tailles distinctes
